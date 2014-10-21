@@ -66,7 +66,7 @@ describe "List API" do
     before do
       @user = create(:user)
       @list = create(:list, permissions: "open", user: @user)
-      patch "/api/v1/lists/#{@list.id}", {user_id: @user.id, list: {name: "new_name", permissions: 'private'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
+      patch "/api/v1/lists/#{@list.id}", {user_id: @user.id, id: @list.id, list: {name: 'new_name', permissions: 'private'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should update list name and permissions" do
