@@ -5,7 +5,7 @@ module Api
       before_action :set_list
 
       def create
-        if (@list.permissions == "open") || (@list.user_id == @authenticated_user)
+        if (@list.permissions == "open") || (@list.user == @authenticated_user)
           @list.add(item_params[:description])
           render nothing: true
         else
@@ -14,7 +14,7 @@ module Api
       end
 
       def update
-        if (@list.permissions == "open") || (@list.user_id == @authenticated_user)
+        if (@list.permissions == "open") || (@list.user == @authenticated_user)
           @item.update(item_params) 
           render nothing: true
         else
@@ -23,7 +23,7 @@ module Api
       end
 
       def destroy
-        if @list.user_id == @authenticated_user
+        if @list.user == @authenticated_user
           @item.mark_complete
           render nothing: true
         else

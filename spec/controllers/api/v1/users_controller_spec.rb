@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Api::V1::UsersController do
 
   before do
-    @api = create(:api_key)
-    authWithToken(@api.access_token)
+    @user = create(:user)
+    authWithToken(@user.api_key.access_token)
   end
 
   describe "#create" do
@@ -37,7 +37,7 @@ describe Api::V1::UsersController do
 
   describe "#index" do
     before do 
-      (1..3).each{ |n| User.create( id: n, username: "name#{n}", password: "pass#{n}" ) }
+      (2..4).each{ |n| User.create( id: n, username: "name#{n}", password: "pass#{n}" ) }
     end
 
     it "returns all usernames and ids" do
@@ -47,9 +47,10 @@ describe Api::V1::UsersController do
       expect(json).to eq( 
         { 'users' => 
           [
-            { 'id' => 1, 'username' => 'name1' },
+            { 'id' => @user.id, 'username' => @user.username },
             { 'id' => 2, 'username' => 'name2' },
-            { 'id' => 3, 'username' => 'name3' }
+            { 'id' => 3, 'username' => 'name3' },
+            { 'id' => 4, 'username' => 'name4' }
           ]
         }
       )

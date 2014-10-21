@@ -3,35 +3,35 @@ require 'spec_helper'
 describe "Users API" do
   context "get /api/v1/users/" do
     before do
-      @api = create(:api_key)
-      3.times { create(:user) }
-      get "/api/v1/users/", nil, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      @user = create(:user)
+      create_list(:user, 3)
+      get "/api/v1/users/", nil, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should list all users" do
       it { expect(response.status).to eq(200) }
       it { json["users"].should be_a_kind_of(Array) }
-      it { json["users"].length.should eq 3 }
+      it { json["users"].length.should eq 4 }
     end
   end
 
   context "post /api/v1/users/ with username and password" do
     before do
-      @api = create(:api_key)
-      post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      @user = create(:user)
+      post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should create a new user" do
       it { expect(response.status).to eq(200) }
-      it { expect(json["user"]).to eq({"id"=>1, "username"=>"testuser"}) }
+      it { expect(json["user"]).to eq({"id"=>2, "username"=>"testuser"}) }
     end
   end
 
   context "post /api/v1/users/ with nonunique username" do
     before do
-      @api = create(:api_key)
-      post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
-      post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      @user = create(:user)
+      post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
+      post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should fail" do
@@ -43,8 +43,8 @@ describe "Users API" do
 
   context "post /api/v1/users/ without a username" do
     before do
-      @api = create(:api_key)
-      post "/api/v1/users/", {user: {password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      @user = create(:user)
+      post "/api/v1/users/", {user: {password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should fail" do
@@ -56,8 +56,8 @@ describe "Users API" do
 
   context "post /api/v1/users/ without a password" do
     before do
-      @api = create(:api_key)
-      post "/api/v1/users/", {user: {username: 'testuser'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      @user = create(:user)
+      post "/api/v1/users/", {user: {username: 'testuser'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should fail" do

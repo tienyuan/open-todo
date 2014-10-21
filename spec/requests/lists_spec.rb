@@ -3,11 +3,11 @@ require 'spec_helper'
 describe "List API" do
   context "get /api/v1/lists/" do
     before do
-      @api = create(:api_key)
+      @user = create(:user)
       create_list(:list, 3, permissions: "open")
       create_list(:list, 3, permissions: "viewable")
       create_list(:list, 3, permissions: "private")
-      get "/api/v1/lists/", nil, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      get "/api/v1/lists/", nil, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should show all non-private lists" do

@@ -4,7 +4,7 @@ describe Api::V1::ListsController do
 
   describe "#index" do
     before do
-      @user = create(:user, password: 'testpass')
+      @user = create(:user)
       @open_list = create(:list, user: @user, name: 'open_list', permissions: 'open')
       @viewable_list = create(:list, user: @user, name: 'viewable_list', permissions: 'viewable')
       @private_list = create(:list, user: @user, name: 'private_list', permissions: 'private')
