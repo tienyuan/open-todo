@@ -12,7 +12,7 @@ describe "Items API" do
       get "/api/v1/lists/#{@list.id}", nil, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
     end
 
-    describe "should show all uncompleted items" do
+    describe "should show all incomplete items" do
       it { expect(response.status).to eq(200) }
       it { json["list"]["items"].should be_a_kind_of(Array) }
       it { json["list"]["items"].length.should eq 3 }
@@ -28,6 +28,21 @@ describe "Items API" do
     end
 
     describe "should create a new item" do
+      it { expect(response.status).to eq(200) }
+      it { expect(Item.last.description).to eq('test_item') }
+    end
+  end
+
+  context "patch /api/v1/lists/id/items" do
+    before do
+      @user = create(:user)
+      @api = create(:api_key, user: @user)
+      @list = create(:list, user: @user)
+      @item = create(:item, list_id: @list.id)
+      patch "/api/v1/lists/#{@list.id}/items/#{@item.id}", {item: {description: 'test_item'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+    end
+
+    describe "should update an existing item" do
       it { expect(response.status).to eq(200) }
       it { expect(Item.last.description).to eq('test_item') }
     end

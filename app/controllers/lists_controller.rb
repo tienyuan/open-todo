@@ -3,7 +3,7 @@ class ListsController < ApplicationController
   before_action :set_list, only: [:show, :edit, :update, :destroy]
 
   def show
-    @items = @list.items.completed
+    @items = @list.items.incompleted
   end
 
   def new

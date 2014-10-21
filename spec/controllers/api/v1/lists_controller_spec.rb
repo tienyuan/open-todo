@@ -103,7 +103,7 @@ describe Api::V1::ListsController do
     end
 
     context "authorized user is the owner of the list" do
-      it "returns all uncompleted items" do
+      it "returns all incompleted items" do
         params = {id: @personal_list.id}
         get :show, params
 
@@ -118,7 +118,7 @@ describe Api::V1::ListsController do
     end
 
     context "authorized user when looking at a nonprivate list" do
-      it "returns all uncompleted items" do
+      it "returns all incompleted items" do
         params = {id: @open_list.id}
         get :show, params
 

@@ -13,11 +13,11 @@ describe Item do
     end
   end
 
-  describe '#completed scope' do 
-    it "shows only uncompleted items" do
+  describe '#incompleted scope' do 
+    it "shows only incomplete items" do
       complete_item = create(:item, completed: true)
-      expect( Item.all.completed ).to include(@item)
-      expect( Item.all.completed ).not_to include(complete_item)
+      expect( Item.all.incompleted ).to include(@item)
+      expect( Item.all.incompleted ).not_to include(complete_item)
     end
   end
 
