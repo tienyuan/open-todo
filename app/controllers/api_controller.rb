@@ -9,9 +9,9 @@ class ApiController < ApplicationController
 
   def restrict_access
     access_token = request.headers['X-ACCESS-TOKEN']
-    @authorized_user = ApiKey.where(access_token: access_token).first.user_id if access_token
+    @authenticated_user = ApiKey.where(access_token: access_token).first.user_id if access_token
 
-    unless @authorized_user
+    unless @authenticated_user
         head status: :unauthorized
       return false
     end
