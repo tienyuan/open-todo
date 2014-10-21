@@ -89,12 +89,20 @@ curl -X DELETE -H "X-ACCESS-TOKEN: access_token_string_goes_here" http://localho
 POST /api/v1/lists/{list_id}/items {item: {description: 'test_item'}}
 Creates a new item if you own the list or if the list is open. Description is required.
 
-PATCH /api/v1/lists/{list_id}/items/{item_id} {user_id: user_id, list: {description: 'Mittens the kitten'}
+```
+curl -X POST -H "X-ACCESS-TOKEN: access_token_string_goes_here" -H "Content-type:application/json" -d "{\"item\": {\"description\": \"Morris the Cat\"}}" http://localhost:3000/api/v1/lists/4/items
+```
+
+PATCH /api/v1/lists/{list_id}/items/{item_id} {item: {description: 'Mittens the kitten'}
 Updates an item with a description if you own the list or if the list is open.
+
+```
+curl -X PATCH -H "X-ACCESS-TOKEN: access_token_string_goes_here" -H "Content-type:application/json" -d "{\"item\": {\"description\": \"Mittens the Kitten\"}}" http://localhost:3000/api/v1/lists/4/items/7/
+```
 
 DELETE /api/v1/items/{item_id}
 Deleting an item marks it as complete and hides it from the list. You have permission to do so if you own the list or the list is open
 
 ```
-curl -X DELETE -H "X-ACCESS-TOKEN: access_token_string_goes_here" http://localhost:3000/api/v1/items/1
+curl -X DELETE -H "X-ACCESS-TOKEN: access_token_string_goes_here" http://localhost:3000/api/v1/items/7/
 ```
