@@ -33,8 +33,16 @@ Once you have a token, you can use the following endpoints and json formats to c
 GET /api/v1/users/
 Returns json for a list of user ids and usernames
 
+```
+curl -H 'X-ACCESS-TOKEN: access_token_string_goes_here' http://localhost:3000/api/v1/users
+```
+
 GET /api/v1/users/{user_id}/lists
 Returns a list of all open and viewable lists and their items for a user. If you are the user, you will also see your private lists.
+
+```
+curl -H 'X-ACCESS-TOKEN: access_token_string_goes_here' http://localhost:3000/api/v1/users/1/lists
+```
 
 POST /api/v1/users/  {user: {username: 'testuser', password: 'testpass'}}
 Creates a new user and returns json for the new user's id and username. Username must be unique
@@ -42,8 +50,16 @@ Creates a new user and returns json for the new user's id and username. Username
 GET /api/v1/lists/
 Returns json for all open and viewable lists and their items
 
+```
+curl -H 'X-ACCESS-TOKEN: access_token_string_goes_here' http://localhost:3000/api/v1/lists
+```
+
 GET /api/v1/lists/{list_id}
 Returns json for a single list and it's items
+
+```
+curl -H 'X-ACCESS-TOKEN: access_token_string_goes_here' http://localhost:3000/api/v1/lists/1
+```
 
 POST /api/v1/lists/ {user_id: @user.id, list: {name: 'test_list', permissions: 'open'}}
 Creates a new list, user_id, name, and permissions are all required. List names must be unique and Permissions can only be set to open, viewable or private.
