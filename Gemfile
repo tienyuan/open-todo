@@ -14,7 +14,11 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'active_model_serializers'
 gem 'figaro'
-gem 'rails_12factor'
+
+group :production do
+  gem 'rails_12factor'
+end
+
 
 group :development, :test do
   gem 'rest-client'
