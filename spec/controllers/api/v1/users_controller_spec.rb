@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Api::V1::UsersController do
 
   before do
-    User.destroy_all
     @api = create(:api_key)
     authWithToken(@api.access_token)
   end

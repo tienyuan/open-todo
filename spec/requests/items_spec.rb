@@ -4,7 +4,6 @@ describe "Items API" do
 
   context "get /api/v1/lists/id" do
     before do
-      User.destroy_all
       @user = create(:user)
       @api = create(:api_key, user: @user)
       @list = create(:list, permissions: "open", user: @user)
@@ -22,9 +21,6 @@ describe "Items API" do
 
   context "post /api/v1/lists/id/items" do
     before do
-      User.destroy_all
-      List.destroy_all
-      Item.destroy_all
       @user = create(:user)
       @api = create(:api_key, user: @user)
       @list = create(:list, user: @user)
@@ -39,9 +35,6 @@ describe "Items API" do
 
   context "delete /api/v1/items/id", focus: true do
     before do
-      User.destroy_all
-      List.destroy_all
-      Item.destroy_all
       @user = create(:user)
       @api = create(:api_key, user: @user)
       @list = create(:list, permissions: "open", user: @user)

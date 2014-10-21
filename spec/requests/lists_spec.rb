@@ -3,7 +3,6 @@ require 'spec_helper'
 describe "List API" do
   context "get /api/v1/lists/" do
     before do
-      User.destroy_all
       @api = create(:api_key)
       create_list(:list, 3, permissions: "open")
       create_list(:list, 3, permissions: "viewable")
@@ -20,7 +19,6 @@ describe "List API" do
 
   context "get /api/v1/user/id/lists for self" do
     before do
-      User.destroy_all
       @user = create(:user)
       @api = create(:api_key, user: @user)
       create_list(:list, 3, permissions: "open", user: @user)
@@ -38,7 +36,6 @@ describe "List API" do
 
   context "get /api/v1/user/id/lists for another" do
     before do
-      User.destroy_all
       @user1 = create(:user)
       @api = create(:api_key, user: @user1)
       @user2 = create(:user)
@@ -57,8 +54,6 @@ describe "List API" do
 
   context "post /api/v1/lists/" do
     before do
-      User.destroy_all
-      List.destroy_all
       @user = create(:user)
       @api = create(:api_key, user: @user)
       post "/api/v1/lists/", {user_id: @user.id, list: {name: 'test_list', permissions: 'open'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
@@ -72,8 +67,6 @@ describe "List API" do
 
   context "patch /api/v1/lists/id" do
     before do
-      User.destroy_all
-      List.destroy_all
       @user = create(:user)
       @api = create(:api_key, user: @user)
       @list = create(:list, permissions: "open", user: @user)
@@ -87,8 +80,6 @@ describe "List API" do
 
   context "delete /api/v1/lists/id" do
     before do
-      User.destroy_all
-      List.destroy_all
       @user = create(:user)
       @api = create(:api_key, user: @user)
       @list = create(:list, permissions: "open", user: @user)
