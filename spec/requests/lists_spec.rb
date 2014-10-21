@@ -20,11 +20,10 @@ describe "List API" do
   context "get /api/v1/user/id/lists for self" do
     before do
       @user = create(:user)
-      @api = create(:api_key, user: @user)
       create_list(:list, 3, permissions: "open", user: @user)
       create_list(:list, 3, permissions: "viewable", user: @user)
       create_list(:list, 3, permissions: "private", user: @user)
-      get "/api/v1/users/#{@user.id}/lists", nil, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      get "/api/v1/users/#{@user.id}/lists", nil, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should show all lists" do
@@ -37,12 +36,11 @@ describe "List API" do
   context "get /api/v1/user/id/lists for another" do
     before do
       @user1 = create(:user)
-      @api = create(:api_key, user: @user1)
       @user2 = create(:user)
       create_list(:list, 3, permissions: "open", user: @user2)
       create_list(:list, 3, permissions: "viewable", user: @user2)
       create_list(:list, 3, permissions: "private", user: @user2)
-      get "/api/v1/users/#{@user2.id}/lists", nil, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      get "/api/v1/users/#{@user2.id}/lists", nil, {'X-ACCESS-TOKEN' => "#{@user1.api_key.access_token}"}
     end
 
     describe "should show non-private lists" do
@@ -55,8 +53,7 @@ describe "List API" do
   context "post /api/v1/lists/" do
     before do
       @user = create(:user)
-      @api = create(:api_key, user: @user)
-      post "/api/v1/lists/", {user_id: @user.id, list: {name: 'test_list', permissions: 'open'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      post "/api/v1/lists/", {user_id: @user.id, list: {name: 'test_list', permissions: 'open'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should create a list" do
@@ -68,9 +65,8 @@ describe "List API" do
   context "patch /api/v1/lists/id" do
     before do
       @user = create(:user)
-      @api = create(:api_key, user: @user)
       @list = create(:list, permissions: "open", user: @user)
-      patch "/api/v1/lists/#{@list.id}", {user_id: @user.id, list: {name: "new_name", permissions: 'private'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      patch "/api/v1/lists/#{@list.id}", {user_id: @user.id, list: {name: "new_name", permissions: 'private'}}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should update list name and permissions" do
@@ -81,9 +77,8 @@ describe "List API" do
   context "delete /api/v1/lists/id" do
     before do
       @user = create(:user)
-      @api = create(:api_key, user: @user)
       @list = create(:list, permissions: "open", user: @user)
-      delete "/api/v1/lists/#{@list.id}", {user_id: @user.id, list: @list.id}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      delete "/api/v1/lists/#{@list.id}", {user_id: @user.id, list: @list.id}, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should delete a list" do

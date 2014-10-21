@@ -5,7 +5,6 @@ describe Api::V1::ListsController do
   describe "#index" do
     before do
       @user = create(:user, password: 'testpass')
-      @api = create(:api_key, user: @user)
       @open_list = create(:list, user: @user, name: 'open_list', permissions: 'open')
       @viewable_list = create(:list, user: @user, name: 'viewable_list', permissions: 'viewable')
       @private_list = create(:list, user: @user, name: 'private_list', permissions: 'private')
@@ -15,7 +14,7 @@ describe Api::V1::ListsController do
       @viewable_list2 = create(:list, user: @user2, name: 'viewable_list2', permissions: 'viewable')
       @private_list2 = create(:list, user: @user2, name: 'private_list2', permissions: 'private')
 
-      authWithToken(@api.access_token)
+      authWithToken(@user.api_key.access_token)
     end
 
     context "authorized user" do
@@ -83,12 +82,10 @@ describe Api::V1::ListsController do
 
   describe "#show", focus: true do
     before do
-      @user = create(:user)
-      @api = create(:api_key, user: @user)
-
+      @user1 = create(:user)
       @user2 = create(:user)
 
-      @personal_list = create(:list, user: @user, permissions: 'viewable')
+      @personal_list = create(:list, user: @user1, permissions: 'viewable')
       @item1 = create(:item, description: 'item1', list_id: @personal_list.id)
       @item1_complete = create(:item, description: 'item1_complete', list_id: @personal_list.id, completed: true)
 
@@ -99,7 +96,7 @@ describe Api::V1::ListsController do
       @private_list = create(:list, user: @user2, permissions: 'private')      
       @item3 = create(:item, description: 'item3', list_id: @private_list.id)
 
-      authWithToken(@api.access_token)
+      authWithToken(@user1.api_key.access_token)
     end
 
     context "authorized user is the owner of the list" do
@@ -110,7 +107,7 @@ describe Api::V1::ListsController do
         expect(response.status).to eq(200) 
         expect(json).to eq(
           { 'list' => 
-              { 'id' => @personal_list.id, 'name' => @personal_list.name, 'user_id' => @user.id, 'permissions' => @personal_list.permissions, 
+              { 'id' => @personal_list.id, 'name' => @personal_list.name, 'user_id' => @user1.id, 'permissions' => @personal_list.permissions, 
                 "items"=>[{"id"=> @item1.id, "description"=> @item1.description , "completed" => @item1.completed }]}
           }
         )
@@ -144,10 +141,9 @@ describe Api::V1::ListsController do
 
   describe "#create" do
     before do
-      @user = create(:user, password: 'testpass')
-      @api = create(:api_key, user: @user)
+      @user = create(:user)
 
-      authWithToken(@api.access_token)
+      authWithToken(@user.api_key.access_token)
     end
 
     it "takes a list name, creates it if it doesn't exist, and returns false if it does" do
@@ -186,10 +182,9 @@ describe Api::V1::ListsController do
 
   describe "#update" do
     before do
-      @user = create(:user, password: 'testpass')
-      @api = create(:api_key, user: @user)
+      @user = create(:user)
 
-      authWithToken(@api.access_token)
+      authWithToken(@user.api_key.access_token)
     end
 
     it "updates a list name that belongs to the authorized user" do
@@ -226,10 +221,9 @@ describe Api::V1::ListsController do
 
   describe '#destroy' do
     before do
-      @user = create(:user, password: 'testpass')
-      @api = create(:api_key, user: @user)
+      @user = create(:user)
 
-      authWithToken(@api.access_token)
+      authWithToken(@user.api_key.access_token)
     end
 
     it "deletes a list that belongs to the authorized user" do

@@ -3,7 +3,6 @@ require 'spec_helper'
 describe "Users API" do
   context "get /api/v1/users/" do
     before do
-      User.destroy_all
       @api = create(:api_key)
       3.times { create(:user) }
       get "/api/v1/users/", nil, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
@@ -18,7 +17,6 @@ describe "Users API" do
 
   context "post /api/v1/users/ with username and password" do
     before do
-      User.destroy_all
       @api = create(:api_key)
       post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
     end
@@ -31,7 +29,6 @@ describe "Users API" do
 
   context "post /api/v1/users/ with nonunique username" do
     before do
-      User.destroy_all
       @api = create(:api_key)
       post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
       post "/api/v1/users/", {user: {username: 'testuser', password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
@@ -46,7 +43,6 @@ describe "Users API" do
 
   context "post /api/v1/users/ without a username" do
     before do
-      User.destroy_all
       @api = create(:api_key)
       post "/api/v1/users/", {user: {password: 'testpass'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
     end
@@ -60,7 +56,6 @@ describe "Users API" do
 
   context "post /api/v1/users/ without a password" do
     before do
-      User.destroy_all
       @api = create(:api_key)
       post "/api/v1/users/", {user: {username: 'testuser'}}, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
     end
