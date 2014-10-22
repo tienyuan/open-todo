@@ -1,7 +1,7 @@
 module Api
   module V1
     class ListsController < ApiController
-      before_action :set_user, except: [:index, :show]
+      before_action :set_user, except: [:index, :show, :destroy]
       before_action :set_list, only: [:show, :edit, :update, :destroy]
 
       def index

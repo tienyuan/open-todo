@@ -228,7 +228,7 @@ describe Api::V1::ListsController do
 
     it "deletes a list that belongs to the authorized user" do
       list = create(:list, user_id: @user.id)
-      params = {user_id: @user.id, id: list.id}
+      params = {id: list.id}
       delete :destroy, params
 
       expect(response.status).to eq(200) 
@@ -238,7 +238,7 @@ describe Api::V1::ListsController do
     it "fails to delete another user's list" do
       other_user = create(:user)
       other_list = create(:list, user: other_user)
-      params = {user_id: @user.id, id: other_list.id}
+      params = {id: other_list.id}
       delete :destroy, params
       
       expect( List.count ).to eq(1)
@@ -246,7 +246,7 @@ describe Api::V1::ListsController do
     end
 
     it "fails to delete an invalid list" do
-      params = {user_id: @user.id, id: "100"}
+      params = {id: "100"}
       delete :destroy, params
 
       expect(response.status).to eq(404)
