@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Api::V1::ListsController do 
 
@@ -80,7 +80,7 @@ describe Api::V1::ListsController do
     end
   end 
 
-  describe "#show", focus: true do
+  describe "#show" do
     before do
       @user1 = create(:user)
       @user2 = create(:user)

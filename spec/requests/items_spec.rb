@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Items API" do
 
@@ -11,10 +11,11 @@ describe "Items API" do
       get "/api/v1/lists/#{@list.id}", nil, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
-    describe "should show all incomplete items" do
+    describe "should show all incompleted items" do
+      subject { json["list"]["items"] }
       it { expect(response.status).to eq(200) }
-      it { json["list"]["items"].should be_a_kind_of(Array) }
-      it { json["list"]["items"].length.should eq 3 }
+      it { should be_a_kind_of(Array) }
+      it { expect(subject.length).to eq(3) }
     end
   end
 
@@ -45,7 +46,7 @@ describe "Items API" do
     end
   end
 
-  context "delete /api/v1/items/id", focus: true do
+  context "delete /api/v1/items/id" do
     before do
       @user = create(:user)
       @list = create(:list, permissions: "open", user: @user)

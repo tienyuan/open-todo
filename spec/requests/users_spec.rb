@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Users API" do
   context "get /api/v1/users/" do
@@ -10,8 +10,8 @@ describe "Users API" do
 
     describe "should list all users" do
       it { expect(response.status).to eq(200) }
-      it { json["users"].should be_a_kind_of(Array) }
-      it { json["users"].length.should eq 4 }
+      it { expect(json["users"]).to be_a_kind_of(Array) }
+      it { expect(json["users"].length).to eq 4 }
     end
   end
 
@@ -23,7 +23,7 @@ describe "Users API" do
 
     describe "should create a new user" do
       it { expect(response.status).to eq(200) }
-      it { expect(json["user"]).to eq({"id"=>2, "username"=>"testuser"}) }
+      it { expect(json["user"]).to eq({"id"=>User.last.id, "username"=>"testuser"}) }
     end
   end
 
