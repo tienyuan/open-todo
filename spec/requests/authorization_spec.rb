@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "Authorization for API" do
   context "connecting with an access_token" do
     before do
-      @api = create(:api_key)
-      get "/api/v1/users/", nil, {'X-ACCESS-TOKEN' => "#{@api.access_token}"}
+      @user = create(:user)
+      get "/api/v1/users/", nil, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
     end
 
     describe "should respond" do

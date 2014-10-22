@@ -1,4 +1,5 @@
 class ApiController < ApplicationController
+  skip_before_filter  :verify_authenticity_token
   before_filter :restrict_access
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -9,9 +10,9 @@ class ApiController < ApplicationController
 
   def restrict_access
     access_token = request.headers['X-ACCESS-TOKEN']
-    @authorized_user = ApiKey.where(access_token: access_token).first.user_id if access_token
+    @authenticated_user = ApiKey.where(access_token: access_token).first.user if access_token
 
-    unless @authorized_user
+    unless @authenticated_user
         head status: :unauthorized
       return false
     end

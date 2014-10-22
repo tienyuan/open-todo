@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe List do
   before do 
-    List.destroy_all
     @user = create(:user)
     @list = create(:list, user: @user)
   end

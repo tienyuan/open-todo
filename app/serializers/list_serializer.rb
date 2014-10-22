@@ -3,6 +3,6 @@ class ListSerializer < ActiveModel::Serializer
   has_many :items
 
   def items
-    object.items.completed
+    object.items.incompleted
   end
 end
