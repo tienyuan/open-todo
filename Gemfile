@@ -15,6 +15,11 @@ gem 'jquery-rails'
 gem 'active_model_serializers'
 gem 'figaro'
 
+group :production do
+  gem 'rails_12factor'
+end
+
+
 group :development, :test do
   gem 'rest-client'
   gem 'pry'

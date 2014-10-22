@@ -5,7 +5,6 @@ describe Api::V1::ItemsController do
   describe "#create" do
     before do
       @user = create(:user)
-      @api = create(:api_key, user: @user)
       @user2 = create(:user)
       @open_list = create(:list, user: @user, permissions: 'open')
       @viewable_list = create(:list, user: @user, permissions: 'viewable')
@@ -14,7 +13,7 @@ describe Api::V1::ItemsController do
       @viewable_list2 = create(:list, user: @user2, permissions: 'viewable')
       @private_list2 = create(:list, user: @user2, permissions: 'private')
 
-      authWithToken(@api.access_token)
+      authWithToken(@user.api_key.access_token)
     end
 
     context "when owned by self" do
@@ -75,13 +74,12 @@ describe Api::V1::ItemsController do
   describe "#update" do
     before do
       @user = create(:user)
-      @api = create(:api_key, user: @user)
       @open_list = create(:list, user_id: @user.id, permissions: 'private')
       @item = create(:item, list_id: @open_list.id)
       @private_list = create(:list, permissions: 'private')
       @item2 = create(:item, list_id: @private_list.id)
 
-      authWithToken(@api.access_token)
+      authWithToken(@user.api_key.access_token)
     end
 
     context "when the authorized user owns the list" do
@@ -128,13 +126,12 @@ describe Api::V1::ItemsController do
   describe "#destroy" do
     before do
       @user = create(:user)
-      @api = create(:api_key, user: @user)
       @open_list = create(:list, user_id: @user.id, permissions: 'open')
       @private_list = create(:list, permissions: 'private')
       @item = create(:item, list_id: @open_list.id, completed: 'false')
       @private_item = create(:item, list_id: @private_list.id,  completed: 'false')
 
-      authWithToken(@api.access_token)
+      authWithToken(@user.api_key.access_token)
     end
 
     context "when the authorized user owns the list" do

@@ -1,0 +1,7 @@
+# Add application configuration variables here, as shown below.
+#
+SECRET_KEY_BASE: 
+DEV_DATABASE_USERNAME: 
+DEV_DATABASE_PASSWORD: 
+TEST_DATABASE_USERNAME: 
+TEST_DATABASE_PASSWORD: 

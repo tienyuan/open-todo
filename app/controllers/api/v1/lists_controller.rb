@@ -9,9 +9,9 @@ module Api
           render json: List.all.not_private
         else
           set_user
-          if @user.id == @authorized_user
+          if @user == @authenticated_user
             render json: @user.lists.owner(@user)
-          elsif @user.id != @authorized_user
+          elsif @user != @authenticated_user
             render json: @user.lists.not_private
           else
             render nothing: true, status: :bad_request
@@ -20,7 +20,7 @@ module Api
       end
 
       def show
-        if (@list.permissions == "open") || (@list.user_id == @authorized_user)
+        if (@list.permissions == "open") || (@list.user == @authenticated_user)
           render json: @list
         else
           render json: @list.errors, status: :unauthorized
@@ -38,7 +38,7 @@ module Api
       end
 
       def update
-        if @list.user_id == @authorized_user
+        if @list.user == @authenticated_user
           @list.update(list_params) 
           render nothing: true
         else
@@ -47,7 +47,7 @@ module Api
       end
 
       def destroy
-        if @list.user_id == @authorized_user
+        if @list.user == @authenticated_user
           @list.destroy
           render nothing: true
         else
