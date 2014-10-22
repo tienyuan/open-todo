@@ -12,6 +12,16 @@ describe "Authorization for API" do
     end
   end
 
+  context "connecting with an invalid access_token" do
+    before do
+      get "/api/v1/users/", nil, {'X-ACCESS-TOKEN' => "this_is_a_bad_token"}
+    end
+
+    describe "should fail" do
+      it { expect(response.status).to eq(401) }
+    end
+  end 
+
   context "connecting without an access_token" do
     before do
       get "/api/v1/users/"
