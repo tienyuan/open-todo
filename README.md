@@ -2,7 +2,7 @@ Open Todo API Description
 ======================
 This project adds an external API to a todo app forked from [open-todo](https://github.com/Bloc/open-todo)
 
-Made with my mentor at Bloc.
+Made with my mentor, [Eliot Sykes](https://www.bloc.io/mentors/eliot-sykes) at Bloc.
 
 
 Setup Instructions
@@ -14,6 +14,14 @@ Setup postgres
 Create a postgres test user and a postgres development user.
 
 Then copy `config/application.example.yml` to `config/application.yml` and add database information. 
+
+```
+SECRET_KEY_BASE: 
+DEV_DATABASE_USERNAME: 
+DEV_DATABASE_PASSWORD: 
+TEST_DATABASE_USERNAME: 
+TEST_DATABASE_PASSWORD:
+```
 
 Run `bundle install` to install all relevant gems.
 
