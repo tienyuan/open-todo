@@ -5,7 +5,7 @@ module Api
       before_action :set_list
 
       def create
-        if (@list.permissions == "open") || (@list.user == @authenticated_user)
+        if (@list.permissions == 'open') || (@list.user == @authenticated_user)
           @list.add(item_params[:description])
           render nothing: true
         else
@@ -14,8 +14,8 @@ module Api
       end
 
       def update
-        if (@list.permissions == "open") || (@list.user == @authenticated_user)
-          @item.update(item_params) 
+        if (@list.permissions == 'open') || (@list.user == @authenticated_user)
+          @item.update(item_params)
           render nothing: true
         else
           render nothing: true, status: :unprocessable_entity

@@ -5,7 +5,7 @@ module Api
       before_action :set_list, only: [:show, :edit, :update, :destroy]
 
       def index
-        if params[:user_id] == nil
+        if params[:user_id].nil?
           render json: List.all.not_private
         else
           set_user
@@ -20,7 +20,7 @@ module Api
       end
 
       def show
-        if (@list.permissions == "open") || (@list.user == @authenticated_user)
+        if (@list.permissions == 'open') || (@list.user == @authenticated_user)
           render json: @list
         else
           render json: @list.errors, status: :unauthorized
