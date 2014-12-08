@@ -1,34 +1,34 @@
 require 'rails_helper'
 
-describe "Authorization for API" do
-  context "connecting with an access_token" do
+describe 'Authorization for API' do
+  context 'connecting with an access_token' do
     before do
       @user = create(:user)
-      get "/api/v1/users/", nil, {'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"}
+      get '/api/v1/users/', nil, 'X-ACCESS-TOKEN' => "#{@user.api_key.access_token}"
     end
 
-    describe "should respond" do
+    describe 'should respond' do
       it { expect(response.status).to eq(200) }
     end
   end
 
-  context "connecting with an invalid access_token" do
+  context 'connecting with an invalid access_token' do
     before do
-      get "/api/v1/users/", nil, {'X-ACCESS-TOKEN' => "this_is_a_bad_token"}
+      get '/api/v1/users/', nil, 'X-ACCESS-TOKEN' => 'this_is_a_bad_token'
     end
 
-    describe "should fail" do
+    describe 'should fail' do
       it { expect(response.status).to eq(401) }
     end
-  end 
+  end
 
-  context "connecting without an access_token" do
+  context 'connecting without an access_token' do
     before do
-      get "/api/v1/users/"
+      get '/api/v1/users/'
     end
 
-    describe "should fail" do
+    describe 'should fail' do
       it { expect(response.status).to eq(401) }
     end
-  end  
+  end
 end

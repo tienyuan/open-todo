@@ -1,5 +1,5 @@
 class ApiController < ApplicationController
-  skip_before_filter  :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token
   before_filter :restrict_access
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -14,7 +14,7 @@ class ApiController < ApplicationController
     @authenticated_user = api_key.user if api_key
 
     unless @authenticated_user
-        head status: :unauthorized
+      head status: :unauthorized
       return false
     end
   end

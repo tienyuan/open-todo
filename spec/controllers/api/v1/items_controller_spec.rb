@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe Api::V1::ItemsController do 
+describe Api::V1::ItemsController do
 
-  describe "#create" do
+  describe '#create' do
     before do
       @user = create(:user)
       @user2 = create(:user)
@@ -13,53 +13,53 @@ describe Api::V1::ItemsController do
       @viewable_list2 = create(:list, user: @user2, permissions: 'viewable')
       @private_list2 = create(:list, user: @user2, permissions: 'private')
 
-      authWithToken(@user.api_key.access_token)
+      auth_with_token(@user.api_key.access_token)
     end
 
-    context "when owned by self" do
-      it "an open list takes a description, creates item" do
-        params = { list_id: @open_list.id, item: {description: 'testitem' }}
+    context 'when owned by self' do
+      it 'an open list takes a description, creates item' do
+        params = { list_id: @open_list.id, item: { description: 'testitem' } }
         post :create, params
 
         expect(response.status).to eq(200)
-        expect(Item.last.description).to eq('testitem')    
+        expect(Item.last.description).to eq('testitem')
       end
 
-      it "a viewable list takes a description, creates item" do
-        params = { list_id: @viewable_list.id, item: {description: 'testitem' }}
+      it 'a viewable list takes a description, creates item' do
+        params = { list_id: @viewable_list.id, item: { description: 'testitem' } }
         post :create, params
 
         expect(response.status).to eq(200)
-        expect(Item.last.description).to eq('testitem') 
+        expect(Item.last.description).to eq('testitem')
       end
 
-      it "a private list takes a description, creates item" do
-        params = { list_id: @private_list.id, item: {description: 'testitem' }}
+      it 'a private list takes a description, creates item' do
+        params = { list_id: @private_list.id, item: { description: 'testitem' } }
         post :create, params
 
         expect(response.status).to eq(200)
-        expect(Item.last.description).to eq('testitem') 
+        expect(Item.last.description).to eq('testitem')
       end
     end
 
-    context "when owned by someone else" do
-      it "an open list takes a description, creates item" do
-        params = { list_id: @open_list2.id, item: {description: 'testitem' }}
+    context 'when owned by someone else' do
+      it 'an open list takes a description, creates item' do
+        params = { list_id: @open_list2.id, item: { description: 'testitem' } }
         post :create, params
 
         expect(response.status).to eq(200)
-        expect(Item.last.description).to eq('testitem')    
+        expect(Item.last.description).to eq('testitem')
       end
-    
-      it "a viewable list returns an error" do
-        params = { list_id: @viewable_list2.id, item: {description: 'testitem' }}
+
+      it 'a viewable list returns an error' do
+        params = { list_id: @viewable_list2.id, item: { description: 'testitem' } }
         post :create, params
 
         expect(response.status).to eq(422)
       end
 
-      it "a private list returns an error" do
-        params = { list_id: @private_list2.id, item: {description: 'testitem' }}
+      it 'a private list returns an error' do
+        params = { list_id: @private_list2.id, item: { description: 'testitem' } }
         post :create, params
 
         expect(response.status).to eq(422)
@@ -67,11 +67,11 @@ describe Api::V1::ItemsController do
     end
 
     after do
-      clearToken
+      clear_token
     end
   end
 
-  describe "#update" do
+  describe '#update' do
     before do
       @user = create(:user)
       @open_list = create(:list, user_id: @user.id, permissions: 'private')
@@ -79,12 +79,12 @@ describe Api::V1::ItemsController do
       @private_list = create(:list, permissions: 'private')
       @item2 = create(:item, list_id: @private_list.id)
 
-      authWithToken(@user.api_key.access_token)
+      auth_with_token(@user.api_key.access_token)
     end
 
-    context "when the authorized user owns the list" do
-      it "updates a item description" do
-        params = { list_id: @open_list.id, id: @item.id, item: {description: 'newitemname'}} 
+    context 'when the authorized user owns the list' do
+      it 'updates a item description' do
+        params = { list_id: @open_list.id, id: @item.id, item: { description: 'newitemname' } }
         patch :update, params
 
         expect(response.status).to eq(200)
@@ -92,8 +92,8 @@ describe Api::V1::ItemsController do
         expect(@item.description).to eq('newitemname')
       end
 
-      it "updates a item to be complete" do
-        params = { list_id: @open_list.id, id: @item.id, item: {completed: 'true'}} 
+      it 'updates a item to be complete' do
+        params = { list_id: @open_list.id, id: @item.id, item: { completed: 'true' } }
         patch :update, params
 
         expect(response.status).to eq(200)
@@ -102,16 +102,16 @@ describe Api::V1::ItemsController do
       end
     end
 
-    context "when the authorized user does not own the list" do
-      it "updating a description returns an error" do
-        params = { list_id: @private_list.id, id: @item2.id, item: {description: 'newitemname'}} 
+    context 'when the authorized user does not own the list' do
+      it 'updating a description returns an error' do
+        params = { list_id: @private_list.id, id: @item2.id, item: { description: 'newitemname' } }
         patch :update, params
 
         expect(response.status).to eq(422)
       end
 
-      it "updating a completion returns an error" do
-        params = { list_id: @private_list.id, id: @item2.id, item: {completed: 'true'}} 
+      it 'updating a completion returns an error' do
+        params = { list_id: @private_list.id, id: @item2.id, item: { completed: 'true' } }
         patch :update, params
 
         expect(response.status).to eq(422)
@@ -119,11 +119,11 @@ describe Api::V1::ItemsController do
     end
 
     after do
-      clearToken
+      clear_token
     end
   end
 
-  describe "#destroy" do
+  describe '#destroy' do
     before do
       @user = create(:user)
       @open_list = create(:list, user_id: @user.id, permissions: 'open')
@@ -131,11 +131,11 @@ describe Api::V1::ItemsController do
       @item = create(:item, list_id: @open_list.id, completed: 'false')
       @private_item = create(:item, list_id: @private_list.id,  completed: 'false')
 
-      authWithToken(@user.api_key.access_token)
+      auth_with_token(@user.api_key.access_token)
     end
 
-    context "when the authorized user owns the list" do
-      it "updates a item to be complete" do
+    context 'when the authorized user owns the list' do
+      it 'updates a item to be complete' do
         params = { id: @item.id }
         delete :destroy, params
 
@@ -145,8 +145,8 @@ describe Api::V1::ItemsController do
       end
     end
 
-    context "when the authorized user does not own the list" do
-      it "returns an error" do
+    context 'when the authorized user does not own the list' do
+      it 'returns an error' do
         params = { id: @private_item.id }
         delete :destroy, params
 
@@ -157,7 +157,7 @@ describe Api::V1::ItemsController do
     end
 
     after do
-      clearToken
+      clear_token
     end
   end
 end

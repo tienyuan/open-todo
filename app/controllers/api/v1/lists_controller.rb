@@ -9,13 +9,7 @@ module Api
           render json: List.all.not_private
         else
           set_user
-          if @user == @authenticated_user
-            render json: @user.lists.owner(@user)
-          elsif @user != @authenticated_user
-            render json: @user.lists.not_private
-          else
-            render nothing: true, status: :bad_request
-          end
+          return_user_list
         end
       end
 
@@ -28,8 +22,8 @@ module Api
       end
 
       def create
-        @list = List.new(list_params) 
-        @list.user_id = @user.id 
+        @list = List.new(list_params)
+        @list.user_id = @user.id
         if @list.save
           render json: @list
         else
@@ -39,7 +33,7 @@ module Api
 
       def update
         if @list.user == @authenticated_user
-          @list.update(list_params) 
+          @list.update(list_params)
           render nothing: true
         else
           render nothing: true, status: :unauthorized
@@ -63,6 +57,16 @@ module Api
 
       def set_list
         @list = List.find(params[:id])
+      end
+
+      def return_user_list
+        if @user == @authenticated_user
+          render json: @user.lists.owner(@user)
+        elsif @user != @authenticated_user
+          render json: @user.lists.not_private
+        else
+          render nothing: true, status: :bad_request
+        end
       end
 
       def list_params
